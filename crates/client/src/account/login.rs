@@ -1,7 +1,6 @@
 use crate::route::{Route, Router};
 use wasm_bindgen::JsCast;
 use web_sys::{console, HtmlInputElement};
-use yew::prelude::*;
 use yew::{function_component, html, Callback, Html};
 
 #[function_component(Login)]
