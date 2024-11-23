@@ -1,3 +1,4 @@
+use crate::route::{Route, Router};
 use wasm_bindgen::JsCast;
 use web_sys::{console, HtmlInputElement};
 use yew::prelude::*;
@@ -38,6 +39,8 @@ pub fn login() -> Html {
     });
 
     html! {
+        <>
+        <Router route={Route::Login}/>
         <form onsubmit={onsubmit}>
             <input
                 placeholder="Username"
@@ -53,5 +56,6 @@ pub fn login() -> Html {
             />
             <button type="submit">{ "Login" }</button>
         </form>
+        </>
     }
 }
