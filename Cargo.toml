@@ -1,0 +1,7 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.dependencies]
+yew = { version = "0.21.0", features = ["csr"] }
+yew-router = "0.18.0"
