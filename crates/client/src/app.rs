@@ -2,12 +2,19 @@ use yew::{function_component, html, Component, Html, HtmlResult, Suspense};
 use yew_router::{BrowserRouter, Switch};
 
 use crate::{
-    account::{dashboard::Dashboard, login::Login},
+    account::{dashboard::Dashboard, login::Login, register::Register},
     route::{self, Route},
 };
 
+#[allow(dead_code)]
+enum Pages {
+    Dashboard,
+    Login,
+    Register,
+}
+
 pub struct App {
-    logged_in: bool,
+    render: Pages,
 }
 
 impl Component for App {
@@ -15,19 +22,26 @@ impl Component for App {
     type Properties = ();
 
     fn create(_ctx: &yew::Context<Self>) -> Self {
-        Self { logged_in: false }
+        Self {
+            render: Pages::Login,
+        }
     }
 
     fn view(&self, _ctx: &yew::Context<Self>) -> yew::Html {
-        match self.logged_in {
-            true => {
+        match self.render {
+            Pages::Dashboard => {
                 html! {
                     <Dashboard />
                 }
             }
-            false => {
+            Pages::Login => {
                 html! {
                     <Login />
+                }
+            }
+            Pages::Register => {
+                html! {
+                    <Register />
                 }
             }
         }
