@@ -12,6 +12,8 @@ pub enum Route {
     NotFound,
     #[at("/login")]
     Login,
+    #[at("/register")]
+    Register,
     #[at("/dashboard")]
     Dashboard,
 }
