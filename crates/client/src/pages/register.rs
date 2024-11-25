@@ -1,23 +1,28 @@
 use crate::helpers::get_by_id::get_by_id;
-use crate::route::{Route, Router};
 use web_sys::console;
 use yew::{function_component, html, Callback, Html};
 
-#[function_component(Login)]
-pub fn login() -> Html {
+#[function_component(Register)]
+pub fn register() -> Html {
     let onsubmit = Callback::from(move |e: yew::events::SubmitEvent| {
         e.prevent_default();
 
         let email_input = get_by_id("email");
-
+        let username_input = get_by_id("username");
         let password_input = get_by_id("password");
 
-        console::log_1(&format!("Email: {}, Password: {}", email_input, password_input).into());
+        console::log_1(
+            &format!(
+                "Email: {}, Password: {}, Username: {}",
+                email_input, password_input, username_input
+            )
+            .into(),
+        );
     });
 
     html! {
         <>
-        <Router route={Route::Login}/>
+        <link rel="stylesheet" href="/static/css/app.css" />
         <form onsubmit={onsubmit}>
             <input
                 placeholder="Email"
@@ -31,7 +36,13 @@ pub fn login() -> Html {
                 id="password"
                 type="password"
             />
-            <button type="submit">{ "Login" }</button>
+            <input
+                placeholder="Username"
+                name="username"
+                id="username"
+                type="username"
+            />
+            <button type="submit">{ "Register" }</button>
         </form>
         </>
     }

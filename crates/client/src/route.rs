@@ -1,36 +1,31 @@
-use yew::{function_component, html, Html, Properties};
-use yew_router::{hooks::use_navigator, Routable};
+use yew::{html, Html};
+use yew_router::Routable;
 
-use crate::app::App;
+use crate::pages::{
+    dashboard::Dashboard, home::Home, login::Login, not_found::NotFound, register::Register,
+};
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
     #[at("/")]
     Home,
-    #[not_found]
-    #[at("/404")]
-    NotFound,
     #[at("/login")]
     Login,
     #[at("/register")]
     Register,
     #[at("/dashboard")]
     Dashboard,
+    #[not_found]
+    #[at("/404")]
+    NotFound,
 }
 
-#[derive(Properties, PartialEq, Clone)]
-pub struct Props {
-    pub route: Route,
-}
-
-pub fn switch(_: Route) -> Html {
-    html! { <App /> }
-}
-
-#[function_component(Router)]
-pub fn router(props: &Props) -> Html {
-    let navigator = use_navigator().unwrap();
-    navigator.push(&props.route);
-
-    html! {}
+pub fn switch(route: Route) -> Html {
+    match route {
+        Route::Home => html! { <Home /> },
+        Route::Login => html! { <Login /> },
+        Route::Register => html! { <Register /> },
+        Route::Dashboard => html! { <Dashboard /> },
+        Route::NotFound => html! { <NotFound /> },
+    }
 }

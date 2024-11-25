@@ -1,10 +1,10 @@
-use app::AppInit;
+use yew::Renderer;
 
-pub mod account;
 pub mod app;
 pub mod helpers;
+pub mod pages;
 pub mod route;
 
 fn main() {
-    yew::Renderer::<AppInit>::new().render();
+    Renderer::<app::App>::new().render();
 }
