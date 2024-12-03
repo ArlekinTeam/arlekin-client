@@ -94,8 +94,7 @@ async fn register_in_backend(
         .await?;
 
     if response.status().is_success() {
-        #[allow(clippy::useless_format)]
-        console::log_1(&format!("Register success!").into());
+        console::log_1(&"Register success!".into());
     } else {
         console::log_1(&format!("Register error! Response code: {}", response.status()).into());
     }
