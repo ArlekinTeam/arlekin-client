@@ -61,7 +61,7 @@ fn hash_password(password: &str) -> String {
     let mut hasher = Sha256::new();
     hasher.update(password);
 
-    return format!("{:x}", hasher.finalize());
+    format!("{:x}", hasher.finalize())
 }
 
 #[derive(Serialize)]
@@ -94,6 +94,7 @@ async fn register_in_backend(
         .await?;
 
     if response.status().is_success() {
+        #[allow(clippy::useless_format)]
         console::log_1(&format!("Register success!").into());
     } else {
         console::log_1(&format!("Register error! Response code: {}", response.status()).into());
