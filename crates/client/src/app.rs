@@ -23,7 +23,7 @@ impl Component for App {
 
     fn create(_ctx: &yew::Context<Self>) -> Self {
         Self {
-            render: Pages::Login,
+            render: Pages::Register,
         }
     }
 
