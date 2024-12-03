@@ -2,7 +2,6 @@ use crate::helpers::get_by_id::get_by_id;
 use crate::route::{Route, Router};
 use reqwest::Client;
 use serde::Serialize;
-use sha2::{Digest, Sha256};
 use wasm_bindgen_futures::spawn_local;
 use web_sys::console;
 use yew::{function_component, html, Callback, Html};
@@ -17,7 +16,14 @@ pub fn register() -> Html {
             let password_input = get_by_id("password");
             let hashed_password = hash_password(&password_input);
 
-            let _ = register_in_backend(&hashed_password, &username_input, &email_input).await;
+            match register_in_backend(&hashed_password, &username_input, &email_input).await {
+                Ok(_) => {
+                    console::log_1(&"Registration successful!".into());
+                }
+                Err(e) => {
+                    console::log_1(&format!("Registration failed: {}", e).into());
+                }
+            }
 
             console::log_1(
                 &format!(
