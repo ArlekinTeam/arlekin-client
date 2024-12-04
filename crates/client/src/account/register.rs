@@ -1,7 +1,8 @@
 use crate::helpers::get_by_id::get_by_id;
 use crate::route::{Route, Router};
 use reqwest::Client;
-use serde::Serialize;
+use serde_json::json;
+use std::error::Error;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::console;
 use yew::{function_component, html, Callback, Html};
@@ -17,7 +18,7 @@ pub fn register() -> Html {
             let hashed_password = hash_password(&password_input);
 
             match register_in_backend(&hashed_password, &username_input, &email_input).await {
-                Ok(_) => {
+                Ok(()) => {
                     console::log_1(&"Registration successful!".into());
                 }
                 Err(e) => {
@@ -64,29 +65,20 @@ pub fn register() -> Html {
 }
 
 fn hash_password(password: &str) -> String {
-    let mut hasher = Sha256::new();
-    hasher.update(password);
-
-    format!("{:x}", hasher.finalize())
-}
-
-#[derive(Serialize)]
-struct User {
-    username: String,
-    email: String,
-    password_hash: String,
+    // I will implement that later
+    return password.to_string();
 }
 
 async fn register_in_backend(
     hashed_password: &str,
     username: &str,
     email: &str,
-) -> Result<(), reqwest::Error> {
-    let user = User {
-        username: username.to_string(),
-        email: email.to_string(),
-        password_hash: hashed_password.to_string(),
-    };
+) -> Result<(), Box<dyn Error>> {
+    let user = json! ({
+        "username": username,
+        "email": email,
+        "password_hash": hashed_password,
+    });
 
     let client = Client::new();
 
@@ -100,10 +92,14 @@ async fn register_in_backend(
         .await?;
 
     if response.status().is_success() {
-        console::log_1(&"Register success!".into());
+        return Ok(());
     } else {
-        console::log_1(&format!("Register error! Response code: {}", response.status()).into());
+        let status_code = response.status();
+        let error_message = response.text().await.unwrap();
+        Err(format!(
+            "Failed to register user status code: {}, error message: {}",
+            status_code, error_message
+        )
+        .into())
     }
-
-    Ok(())
 }
