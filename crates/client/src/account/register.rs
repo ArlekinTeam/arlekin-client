@@ -66,7 +66,7 @@ pub fn register() -> Html {
 
 fn hash_password(password: &str) -> String {
     // I will implement that later
-    return password.to_string();
+    password.to_string()
 }
 
 async fn register_in_backend(
@@ -92,7 +92,7 @@ async fn register_in_backend(
         .await?;
 
     if response.status().is_success() {
-        return Ok(());
+        Ok(())
     } else {
         let status_code = response.status();
         let error_message = response.text().await.unwrap();
