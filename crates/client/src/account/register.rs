@@ -1,5 +1,7 @@
 use crate::helpers::get_by_id::get_by_id;
 use crate::route::{Route, Router};
+use argon2::Argon2;
+use hex::encode;
 use reqwest::Client;
 use serde_json::json;
 use std::error::Error;
@@ -15,7 +17,7 @@ pub fn register() -> Html {
             let email_input = get_by_id("email");
             let username_input = get_by_id("username");
             let password_input = get_by_id("password");
-            let hashed_password = hash_password(&password_input);
+            let hashed_password = hash_password(&password_input, &email_input);
 
             match register_in_backend(&hashed_password, &username_input, &email_input).await {
                 Ok(()) => {
@@ -64,9 +66,18 @@ pub fn register() -> Html {
     }
 }
 
-fn hash_password(password: &str) -> String {
-    // I will implement that later
-    password.to_string()
+fn hash_password(password: &str, email: &str) -> String {
+    let mut password_hash = [0u8; 32];
+
+    Argon2::default()
+        .hash_password_into(
+            password.as_bytes(),
+            format!("arlekin{}login", email).as_bytes(),
+            &mut password_hash,
+        )
+        .unwrap();
+
+    encode(password_hash)
 }
 
 async fn register_in_backend(
