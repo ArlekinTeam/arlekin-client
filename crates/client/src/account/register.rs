@@ -1,7 +1,6 @@
 use crate::helpers::get_by_id::get_by_id;
+use crate::helpers::hash_password::hash_password;
 use crate::route::{Route, Router};
-use argon2::Argon2;
-use hex::encode;
 use reqwest::Client;
 use serde_json::json;
 use std::error::Error;
@@ -64,20 +63,6 @@ pub fn register() -> Html {
         </form>
         </>
     }
-}
-
-fn hash_password(password: &str, email: &str) -> String {
-    let mut password_hash = [0u8; 32];
-
-    Argon2::default()
-        .hash_password_into(
-            password.as_bytes(),
-            format!("arlekin{}login", email).as_bytes(),
-            &mut password_hash,
-        )
-        .unwrap();
-
-    encode(password_hash)
 }
 
 async fn register_in_backend(
