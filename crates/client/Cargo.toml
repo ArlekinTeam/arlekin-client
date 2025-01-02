@@ -14,3 +14,4 @@ argon2.workspace = true
 wasm-bindgen-futures.workspace = true
 serde_json.workspace = true
 hex.workspace = true
+wasm-cookies.workspace = true

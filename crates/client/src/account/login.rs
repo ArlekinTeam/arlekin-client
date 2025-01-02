@@ -3,6 +3,7 @@ use crate::route::{Route, Router};
 use reqwest::Client;
 use serde_json::json;
 use std::error::Error;
+use wasm_cookies::{cookies, CookieOptions};
 use web_sys::console;
 use yew::{function_component, html, Callback, Html};
 
@@ -74,8 +75,9 @@ async fn login_in_backend(email: &str, password: &str) -> Result<(), Box<dyn Err
             .unwrap_or_default()
             .to_string();
         console::log_1(&format!("Snowflake: {}", user_id).into());
+        cookies::set("user_id", user_id.as_str(), &CookieOptions::default());
     } else {
-        console::log_1(&"Login failed".into());
+        console::log_1(&format!("Login failed, response: {}", response.status()).into());
     }
     Ok(())
 }
