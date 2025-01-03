@@ -67,7 +67,6 @@ async fn login_in_backend(email: &str, password: &str) -> Result<(), Box<dyn Err
         .send()
         .await?;
     if response.status().is_success() {
-        console::log_1(&"Login successful".into());
         let response_text = response.text().await?;
         let response_json: serde_json::Value = serde_json::from_str(&response_text)?;
         let user_id = response_json["user_id"]
@@ -76,8 +75,8 @@ async fn login_in_backend(email: &str, password: &str) -> Result<(), Box<dyn Err
             .to_string();
         console::log_1(&format!("Snowflake: {}", user_id).into());
         cookies::set("user_id", user_id.as_str(), &CookieOptions::default());
+        Ok(())
     } else {
-        console::log_1(&format!("Login failed, response: {}", response.status()).into());
+        Err(format!("response: {}", response.status()).into())
     }
-    Ok(())
 }
